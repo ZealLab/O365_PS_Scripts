@@ -5,9 +5,9 @@ This is a collection of scripts to preform administrative tasks in Office 365 fo
 First run the o365.ps1 script, it will prompt you for information of the o365 administrative account.
 
 Information requested:
-Administrator Acccount
-Password
-Default Domain to use
+Administrator Acccount,
+Password,
+Default Domain to use,
 Format of the email address naming convention the company uses.
 
 Once complete it will write a config file to C:\Scripts\Config that holds the account information locally.
