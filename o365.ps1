@@ -59,6 +59,7 @@ if ($(Test-Path -Path $cfg\o365.psd1) -eq ($false))
     [2] first.last@$domain
     [3] lastf@$domain
     [4] first@$domain
+    [5] firstl@$domain
     ")
     While ($format -eq $null)
     {
@@ -67,6 +68,7 @@ if ($(Test-Path -Path $cfg\o365.psd1) -eq ($false))
     [2] first.last@$domain
     [3] lastf@$domain
     [4] first@$domain
+    [5] firstl@$domain
     ")
     }
 @"
@@ -94,6 +96,7 @@ if ($Config.$admin -eq $null)
     [2] first.last@$domain
     [3] lastf@$domain
     [4] first@$domain
+    [5] firstl@$domain
     ")
 
 @"
@@ -109,13 +112,21 @@ $form = "$format"
 $password = $Config.$pwd | ConvertTo-SecureString
 $user = $Config.$admin
 $cred = New-Object System.Management.Automation.PSCredential ($user, $password)
+try
+    {
+    Connect-AzureAD -Credential $cred
+    Connect-MsolService -Credential $cred
+    Get-PSSession | Remove-PSSession
+    $Session = New-PSSession -ConfigurationName Microsoft.Exchange -ConnectionUri https://outlook.office365.com/powershell-liveid/ -Credential $cred -Authentication Basic -AllowRedirection
+    # Exchange Uri https://outlook.office365.com/powershell-liveid/
+    # Compliance Uri https://ps.compliance.protection.outlook.com/powershell-liveid/
+    Import-PSSession $Session -DisableNameChecking
+    Set-Variable -Name Account -Value $Account -Scope Global
+    }
+catch
+    {
+    Write-Warning "Problem connecting with Credentials Please update password on Office.com
 
-Connect-AzureAD -Credential $cred
-Connect-MsolService -Credential $cred
-Get-PSSession | Remove-PSSession
-$Session = New-PSSession -ConfigurationName Microsoft.Exchange -ConnectionUri https://outlook.office365.com/powershell-liveid/ -Credential $cred -Authentication Basic -AllowRedirection
-# Exchange Uri https://outlook.office365.com/powershell-liveid/
-# Compliance Uri https://ps.compliance.protection.outlook.com/powershell-liveid/
-Import-PSSession $Session -DisableNameChecking
-Set-Variable -Name Account -Value $Account -Scope Global
+    Current Password: $password"
+    }
 Remove-Variable admin,password,user,Session,cfg

@@ -23,6 +23,24 @@
   ".\o365CreateUser.ps1"
 #>
 
+function New-Password 
+{
+    $c = $null
+    for ($i = 1; $i -lt 15; $i++) 
+    {
+        $a = Get-Random -Minimum 1 -Maximum 4 
+        switch ($a) 
+        {
+            1 {$b = Get-Random -Minimum 48 -Maximum 58}
+            2 {$b = Get-Random -Minimum 65 -Maximum 91}
+            3 {$b = Get-Random -Minimum 97 -Maximum 123}
+        }
+        [string]$c += [char]$b
+    }
+    $c = $c + "!"
+    $c
+}
+
 [int]$int = 0
 Write-Host "
 Licenses
@@ -69,12 +87,16 @@ elseif ($Config.$format -eq 4)
     {
     $user = $first+"@"+$Config.$domain
     }
+elseif ($Config.$format -eq 5)
+    {
+    $user = $first+$last[0]+"@"+$Config.$domain
+    }
 else
     {
     Write-Warning "Format incorrect Config needs debugging"
     exit
     }
-$pw = ([char[]]([char]33..[char]95) + ([char[]]([char]97..[char]126)) + 0..9 | sort {Get-Random})[0..8] -join ''
+$pw = New-Password
 if ($phone -and $department)
     {
         New-MsolUser -DisplayName "$first $last" -FirstName $first -LastName $last -UserPrincipalName $user -UsageLocation US -LicenseAssignment $license -PhoneNumber $phone -Password $pw -Department $department -Verbose
