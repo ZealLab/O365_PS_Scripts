@@ -92,6 +92,10 @@ elseif ($Config.$format -eq 5)
     {
     $user = $first+$last[0]+"@"+$Config.$domain
     }
+elseif ($Config.$format -eq 6)
+    {
+    $user = $first+$last+"@"+$Config.$domain
+    }
 else
     {
     Write-Warning "Format incorrect Config needs debugging"

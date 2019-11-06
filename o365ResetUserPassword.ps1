@@ -29,6 +29,6 @@ $user = Read-Host "Email address to reset password: "
 $password = Read-Host "Enter new password: "
 Set-MsolUserPassword -UserPrincipalName $user -NewPassword $password
 Write-Host "
-I reset to password for $user to $password
+I reset the password for $user to $password
 "
 Remove-Variable user,password

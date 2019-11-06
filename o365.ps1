@@ -60,6 +60,7 @@ if ($(Test-Path -Path $cfg\o365.psd1) -eq ($false))
     [3] lastf@$domain
     [4] first@$domain
     [5] firstl@$domain
+    [6] firstlast@$domain
     ")
     While ($format -eq $null)
     {
@@ -69,6 +70,7 @@ if ($(Test-Path -Path $cfg\o365.psd1) -eq ($false))
     [3] lastf@$domain
     [4] first@$domain
     [5] firstl@$domain
+    [6] firstlast@$domain
     ")
     }
 @"
@@ -97,6 +99,7 @@ if ($Config.$admin -eq $null)
     [3] lastf@$domain
     [4] first@$domain
     [5] firstl@$domain
+    [6] firstlast@$domain
     ")
 
 @"
