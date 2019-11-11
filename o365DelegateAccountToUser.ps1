@@ -20,7 +20,9 @@
 .EXAMPLE
   ".\o365DelegateAccountToUser.ps1"
 #>
-# List all Users
+
+$EmailRegex = '^([\w-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$'
+
 Write-Host "
        Users
 -------------------"
@@ -28,7 +30,21 @@ Write-Host "
 Write-Host "-------------------
 "
 $source = Read-Host "Account to be delegated from"
+Write-Host "
+Current Deligates
+------------------
+"
+$delegates = (Get-MailboxPermission -Identity $source).User
+ForEach ($delegate in $delegates)
+    {
+    if ($delegate -match $EmailRegex)
+        {
+        Write-Host $delegate
+        }
+    }
+Write-Host "
+----------------"
 $target = Read-Host "Account to be delegated to"
+Add-MailboxPermission -Identity $source -User $target -AccessRights FullAccess -InheritanceType All
 
-
-Remove-Variable sorce,target
+Remove-Variable sorce,target,delegate,delegates
