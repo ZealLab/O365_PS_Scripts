@@ -60,5 +60,5 @@ if ($fwd)
     Write-Host "The $user mailbox is now being forwarded to $fwd"
     }
 Set-Mailbox -Identity $user -HiddenFromAddressListsEnabled $true -Verbose
-Write-Host "Disabled the $user account."
+Write-Host "I disabled the $user account."
 Remove-Variable user,license,licenses,group,groups,fwd
