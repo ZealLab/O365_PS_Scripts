@@ -49,8 +49,11 @@ Licenses
 "
 ForEach($sku in Get-MsolAccountSku)
     {
-    Write-Host $sku.AccountSkuId " |  Licenses Available: "($sku.ActiveUnits - $sku.ConsumedUnits)
-    [int]$int = [int]$int + ([int]$sku.ActiveUnits - [int]$sku.ConsumedUnits)
+    if ($sku.AccountSkuId -notmatch 'TEAMS_COMMERCIAL_TRIAL')
+        {
+        Write-Host $sku.AccountSkuId " |  Licenses Available: "($sku.ActiveUnits - $sku.ConsumedUnits)
+        [int]$int = [int]$int + ([int]$sku.ActiveUnits - [int]$sku.ConsumedUnits)
+        }
     }
 Write-Host "
 ----------------
