@@ -128,8 +128,6 @@ try
     }
 catch
     {
-    Write-Warning "Problem connecting with Credentials Please update password on Office.com
-
-    Current Password: $password"
+    Write-Warning "Problem connecting with Credentials Please update password on Office.com"
     }
 Remove-Variable admin,password,user,Session,cfg
