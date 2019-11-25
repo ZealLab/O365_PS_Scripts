@@ -53,7 +53,6 @@ ForEach ($license in $licenses)
     }
 # Block account from SignIn and forward
 Set-AzureADUser -ObjectId $user -AccountEnabled $false -Verbose
-Set-MsolUserPassword -UserPrincipalName $user -NewPassword 'R@nd0mP@$$w0rD39!?' -Verbose
 if ($fwd)
     {
     Set-Mailbox -Identity $user -DeliverToMailboxAndForward $true -ForwardingAddress $fwd -Verbose
