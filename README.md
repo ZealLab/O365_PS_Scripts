@@ -15,6 +15,6 @@ This config file is used by other scripts in this collection to make modificatio
 
 It is best to store the o365.ps1 in a PATH directory such as C:\Windows\System32\ so that you can use 
 PowerShell's Intellisense to autocomplete the account parameter.
-Example:<br>
+<br>Example:<br>
 `o365 -Account "test_account_name"`<br>
 NO SPACES OR SPECIAL CHARACTERS except '_' can be used in the account name parameter.
