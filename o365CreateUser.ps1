@@ -125,6 +125,26 @@ else
         New-MsolUser -DisplayName "$first $last" -FirstName $first -LastName $last -UserPrincipalName $user -UsageLocation US -LicenseAssignment $license -Password $pw -Verbose
         Write-Host $user
     }
+    $test = $null
+While ($test -eq $null)
+    {
+    cls
+    Write-Host "Creating user please wait..." -ForegroundColor Red -NoNewline
+    Start-Sleep -Seconds 1
+    cls
+    Write-Host "Creating user please wait..." -ForegroundColor Green -NoNewline
+    Start-Sleep -Seconds 1
+    cls
+    Write-Host "Creating user please wait..." -ForegroundColor Cyan -NoNewline
+    Start-Sleep -Seconds 1
+    cls
+    Write-Host "Creating user please wait..." -ForegroundColor White -NoNewline
+    Start-Sleep -Seconds 1
+    cls
+    Write-Host "Creating user please wait..." -ForegroundColor Yellow -NoNewline
+    Start-Sleep -Seconds 1
+    $test = Get-MsolUser -UserPrincipalName $user -ErrorAction Ignore
+    }
 Write-Host "
 Distribution Groups
 -------------------"
@@ -148,4 +168,4 @@ Password: $pw
 #$(ForEach ($group in (Get-DistributionGroup)){Write-Host $group.Name | Where (Get-DistributionGroupMember -Identity $group.Name).Name.tostring -match "Jason.McFarland"})
 
 
-Remove-Variable first,last,user,license,phone,pw,department,domain,group,int
+Remove-Variable first,last,user,license,phone,pw,department,domain,group,int,test

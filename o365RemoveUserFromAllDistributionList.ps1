@@ -30,9 +30,10 @@ $groups = Get-DistributionGroup
 ForEach ($group in $groups)
     {
     $names = (Get-DistributionGroupMember -Identity $group.Name).Name
-    if ($user -in $names)
+    if ($user -match $names)
         {
         Remove-DistributionGroupMember -Identity $group.DisplayName -Member $user
         Write-Host "Removed user from "$group.DisplayName
         }
     }
+Remove-Variable user,groups,group,names
