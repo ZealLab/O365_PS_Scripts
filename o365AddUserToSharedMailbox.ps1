@@ -37,7 +37,7 @@ $shared = Read-Host "Shared mailbox to add to $user"
 
 Add-MailboxPermission $shared -User $user -AccessRights FullAccess -InheritanceType all
 
-Write-Host  (Get-Mailbox $shared | ForEach {Get-MailboxPermission -Identity $_.Alias | Format-Table user})
+#Write-Host  (Get-Mailbox $shared | ForEach {Get-MailboxPermission -Identity $_.Alias | Format-Table user})
 
 Write-Host "I added $user to the $shared shared mailbox."
 
