@@ -46,5 +46,7 @@ Write-Host "
 ----------------"
 $target = Read-Host "Account to be delegated to"
 Add-MailboxPermission -Identity $source -User $target -AccessRights FullAccess -InheritanceType All
+Write-Host "
+Added $target delegate access to $source"
 
-Remove-Variable sorce,target,delegate,delegates
+Remove-Variable source,target,delegate,delegates
