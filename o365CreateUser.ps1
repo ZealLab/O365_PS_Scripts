@@ -22,7 +22,7 @@
   
 .EXAMPLE
   ".\o365CreateUser.ps1"
-#>
+#>#
 
 function New-Password 
 {
