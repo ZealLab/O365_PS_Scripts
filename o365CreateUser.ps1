@@ -125,8 +125,9 @@ else
         New-MsolUser -DisplayName "$first $last" -FirstName $first -LastName $last -UserPrincipalName $user -UsageLocation US -LicenseAssignment $license -Password $pw -Verbose
         Write-Host $user
     }
-    $test = $null
-While ($test -eq $null)
+$Error.Clear()
+Get-MsolUser -UserPrincipalName $user -ErrorAction Ignore
+While ($Error)
     {
     cls
     Write-Host "Creating user please wait..." -ForegroundColor Red -NoNewline
@@ -143,7 +144,8 @@ While ($test -eq $null)
     cls
     Write-Host "Creating user please wait..." -ForegroundColor Yellow -NoNewline
     Start-Sleep -Seconds 1
-    $test = Get-MsolUser -UserPrincipalName $user -ErrorAction Ignore
+    $Error.Clear()
+    Get-MsolUser -UserPrincipalName $user -ErrorAction Ignore
     }
 Write-Host "
 Distribution Groups

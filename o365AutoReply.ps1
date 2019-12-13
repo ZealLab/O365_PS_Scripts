@@ -22,18 +22,13 @@
 Write-Host "
        Users
 -------------------"
-(Get-MsolUser -All | Where {$_.isLicensed -eq $true}).UserPrincipalName | Sort
+(Get-MsolUser -All).UserPrincipalName | Sort
 Write-Host "-------------------
 "
 $user = Read-Host "Email address of the auto reply to be set on"
 $message = Read-Host "Auto Reply message"
-$switch = Read-Host "Confirm to set $user with the this away message (y/n)"
-if ($switch -eq 'y')
-    {
-    Set-MailboxAutoReplyConfiguration -Identity $user -AutoReplyState Enabled -ExternalMessage $message -InternalMessage $message -Confirm
+Set-MailboxAutoReplyConfiguration -Identity $user -AutoReplyState Enabled -ExternalMessage $message -InternalMessage $message -Confirm
+Write-Host "The $user account has been set with the following away message:
+$message"
 
-    Write-Host "The $user account has been set with the following away message:
-
-    $message"
-    }
 Remove-Variable user,message
