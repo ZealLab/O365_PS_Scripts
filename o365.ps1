@@ -110,24 +110,32 @@ $dom = "$domain"
 $form = "$format"
 }
 "@ | Out-File -FilePath $cfg\o365.psd1 -Append
+    }
+$switch = $false
+While ($switch = $false)
+    {
+    $switch = $true
     Import-LocalizedData -BindingVariable "Config" -BaseDirectory $cfg -FileName o365.psd1
+    $cred = New-Object System.Management.Automation.PSCredential ($Config.$admin, ($Config.$pwd | ConvertTo-SecureString))
+    try
+        {
+        Connect-AzureAD -Credential $cred
+        Connect-MsolService -Credential $cred
+        Get-PSSession | Remove-PSSession
+        $Session = New-PSSession -ConfigurationName Microsoft.Exchange -ConnectionUri https://outlook.office365.com/powershell-liveid/ -Credential $cred -Authentication Basic -AllowRedirection
+        # Exchange Uri https://outlook.office365.com/powershell-liveid/
+        # Compliance Uri https://ps.compliance.protection.outlook.com/powershell-liveid/
+        Import-PSSession $Session -DisableNameChecking
+        Set-Variable -Name Account -Value $Account -Scope Global
+        Remove-Variable Session
+        }
+    catch
+        {
+        Write-Warning "Problem connecting with Credentials Please update password on Office.com"
+        $newpass = $(Read-Host -Prompt "Please enter thee new password once changed in Office.com" -AsSecureString | ConvertFrom-SecureString)
+        (Get-Content "$cfg\o365.psd1" -Raw) -replace $Config.$pwd,$newpass | Set-Content "$cfg\o365.psd1"
+        Remove-Variable newpass
+        $switch = $false
+        }
     }
-$password = $Config.$pwd | ConvertTo-SecureString
-$user = $Config.$admin
-$cred = New-Object System.Management.Automation.PSCredential ($user, $password)
-try
-    {
-    Connect-AzureAD -Credential $cred
-    Connect-MsolService -Credential $cred
-    Get-PSSession | Remove-PSSession
-    $Session = New-PSSession -ConfigurationName Microsoft.Exchange -ConnectionUri https://outlook.office365.com/powershell-liveid/ -Credential $cred -Authentication Basic -AllowRedirection
-    # Exchange Uri https://outlook.office365.com/powershell-liveid/
-    # Compliance Uri https://ps.compliance.protection.outlook.com/powershell-liveid/
-    Import-PSSession $Session -DisableNameChecking
-    Set-Variable -Name Account -Value $Account -Scope Global
-    }
-catch
-    {
-    Write-Warning "Problem connecting with Credentials Please update password on Office.com"
-    }
-Remove-Variable admin,password,user,Session,cfg
+Remove-Variable admin,password,user,cfg

@@ -126,7 +126,7 @@ else
         Write-Host $user
     }
 $Error.Clear()
-Get-MsolUser -UserPrincipalName $user -ErrorAction Ignore
+Get-MsolUser -UserPrincipalName $user -ErrorAction Continue
 While ($Error)
     {
     cls
@@ -145,7 +145,7 @@ While ($Error)
     Write-Host "Creating user please wait..." -ForegroundColor Yellow -NoNewline
     Start-Sleep -Seconds 1
     $Error.Clear()
-    Get-MsolUser -UserPrincipalName $user -ErrorAction Ignore
+    Get-MsolUser -UserPrincipalName $user -ErrorAction Continue
     }
 Write-Host "
 Distribution Groups
@@ -170,4 +170,4 @@ Password: $pw
 #$(ForEach ($group in (Get-DistributionGroup)){Write-Host $group.Name | Where (Get-DistributionGroupMember -Identity $group.Name).Name.tostring -match "Jason.McFarland"})
 
 
-Remove-Variable first,last,user,license,phone,pw,department,domain,group,int,test
+Remove-Variable first,last,user,license,phone,pw,department,domain,group,int
