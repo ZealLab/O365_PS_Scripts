@@ -111,10 +111,9 @@ $form = "$format"
 }
 "@ | Out-File -FilePath $cfg\o365.psd1 -Append
     }
-$switch = $false
-While ($switch = $false)
+$int = 0
+While ($int -eq 0)
     {
-    $switch = $true
     Import-LocalizedData -BindingVariable "Config" -BaseDirectory $cfg -FileName o365.psd1
     $cred = New-Object System.Management.Automation.PSCredential ($Config.$admin, ($Config.$pwd | ConvertTo-SecureString))
     try
@@ -128,6 +127,7 @@ While ($switch = $false)
         Import-PSSession $Session -DisableNameChecking
         Set-Variable -Name Account -Value $Account -Scope Global
         Remove-Variable Session
+        $int = 1
         }
     catch
         {
@@ -135,7 +135,15 @@ While ($switch = $false)
         $newpass = $(Read-Host -Prompt "Please enter thee new password once changed in Office.com" -AsSecureString | ConvertFrom-SecureString)
         (Get-Content "$cfg\o365.psd1" -Raw) -replace $Config.$pwd,$newpass | Set-Content "$cfg\o365.psd1"
         Remove-Variable newpass
-        $switch = $false
+        $int = 0
         }
     }
-Remove-Variable admin,password,user,cfg
+if ($password)
+    {
+    Remove-Variable password
+    }
+if ($user)
+    {
+    Remove-Variable user
+    }
+Remove-Variable admin,cfg
