@@ -62,7 +62,7 @@ if ([int]$int -eq 0)
     {
     Write-Host "There are no Office 365 licenses available. Here is a list of currently licensed accounts, do you see any that we could deactivate? If not would you like to add an additional license?
     "
-    (Get-MsolUser -All | where {$_.isLicensed -eq $true}).UserPrincipalName
+    (Get-MsolUser -All | where {$_.isLicensed -eq $true}).UserPrincipalName | Sort
     exit
     }
 $cfg = 'C:\Scripts\Config'
